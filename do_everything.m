@@ -133,6 +133,7 @@ figure;
 subplot(4,1,1:2);
 plot(theta,ZZZ,'m-','LineWidth',3); ylabel('GRI');  grid on; hold on
 plot(theta(ibest),ZZZ(ibest),'mp','MarkerFaceColor','m','MarkerSize',10);
+title('optimal exposure combination');
 subplot(4,1,3); 
 area(theta,XXX,'FaceColor','c'); ylabel(Xname); hold on
 plot(theta(ibest),XXX(ibest),'mp','MarkerFaceColor','m'); 
