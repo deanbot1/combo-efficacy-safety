@@ -11,8 +11,8 @@ Yname = 'Drug Y (mg/L)';  % for graph labeling
 % all exposures are assumed to be HUMAN free fraction for interspecies
 % translation. Please see manuscript for how to do this correction.
 
-XPK_mouse = [0 0 .5 .5 2  2]; % Y PK exposure for mouse groups (all the same because we can't collect PK from individual mice)
-YPK_mouse = [0 0  1.5 1.5 3 3]; % Y PK exposure for mouse groups (all the same because we can't collect PK from individual mice)
+XPK_mouse = [0 0 0.5 0.5 1  1]; % Y PK exposure for mouse groups (all the same because we can't collect PK from individual mice)
+YPK_mouse = [0 0  0.75 0.75 1.5 1.5]; % Y PK exposure for mouse groups (all the same because we can't collect PK from individual mice)
 
 [Xm,Ym] = meshgrid(XPK_mouse,YPK_mouse);
 Xm = reshape(Xm,[],1);
@@ -32,7 +32,7 @@ XY_PK_eff = @(Xslope,YEmax,YEC50,beta,x,y)...  % the combo efficacy equals...
 	beta*X_PK_eff(Xslope,x).*Y_PK_eff(YEmax,YEC50,y); % interaction term
 
 GRIdata = XY_PK_eff(Xslope,YEmax,YEC50,beta,Xm,Ym)+GRInoise*randn(size(Xm));
-figure; plot3(Xm,Ym,GRIdata,'ro'); xlabel('Xname');ylabel('Yname');zlabel('GRI');
+figure; plot3(Xm,Ym,GRIdata,'ro'); xlabel(Xname);ylabel(Yname);zlabel('GRI');
 
 %% now fit a surface to the efficacy data
 
@@ -45,7 +45,7 @@ figure; surf(XXm,YYm,fitobj(XXm,YYm));
 colorbar
 colormap jet
 
-%% generate tox/safety data in humans
+%% generate exposure/safety data in humans
 % once again all concentrations are assumed to be in free fraction in human
 % blood
 Nh = 50; % number of humans in each of the 3 trials (single agent X, SA Y, and combox3)
@@ -56,17 +56,21 @@ YAUC = [3*rand(Nh,1);zeros(Nh,1);3*rand(3*Nh,1)]; % exposure of Y in each patien
 igood = find(XAUC+2*YAUC < 3);
 XAUC = XAUC(igood); YAUC = YAUC(igood);
 
-b = -3; % Y intercept in logit (p(DLT)) space
+b = -4; % Y intercept in logit (p(DLT)) space
 mx = 3; % slope of X in logit(p(DLT))
-my = 0.9; % slope of Y in logit(p(DLT))
-alpha = 1; % intereaction term for tox
+my = 4; % slope of Y in logit(p(DLT))
+alpa = 1; % intereaction term for tox
 
-logit_tox = b + mx*XAUC + my*YAUC + alpha*XAUC.*YAUC;
+logit_tox = b + mx*XAUC + my*YAUC + alpa*XAUC.*YAUC;
 p_tox = 1./(1+exp(-logit_tox)); % probability of tox of each patient
 DLT = rand(size(p_tox)) < p_tox; % whether or not each patient had a DLT
 
 
 %% plot tox unidimensionally ALL SUBJECTS
+% if matlab throws an error below, that means either all subjects had DLT's or all subjects didn't
+% have DLT's. Just run the section above again, and hopefully the random
+% data will include both DLT and non-DLT patients. 
+
 scale = 'loglin';
 figure
 PTOX = 0.25; % probability threshold to consider as max tolerated exposure
@@ -127,6 +131,9 @@ plot3(XXX,YYY,ZZZ,'m-','LineWidth',3); xlabel(Xname); ylabel(Yname); zlabel('GRI
 plot(XXX,YYY,'m-');
 plot(XXX(ibest),YYY(ibest),'mp','MarkerFaceColor','m');
 stem3(XXX(ibest),YYY(ibest),ZZZ(ibest),'mp','MarkerFaceColor','m');
+alpha 0.5 % make surface semi-transparent
+
+
 % now the slice thing
 theta = atan(YYY./XXX);
 figure; 
@@ -143,7 +150,6 @@ area(theta,YYY,'FaceColor','c'); ylabel(Yname); hold on
 plot(theta(ibest),YYY(ibest),'mp','MarkerFaceColor','m'); 
 text(theta(ibest),YYY(ibest),[' ' num2str(YYY(ibest)) Yname],'color','m');
 xlabel('\theta=tan^{-1}([Y]/[X])');
-
 % the magenta star is optimal tolerated exposure combination
 
 
