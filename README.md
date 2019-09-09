@@ -10,7 +10,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # combo-efficacy-safety
-Supporting MATLAB code for CCR submitted manuscript: Dose Optimization for Anticancer Drug Combinations: Maximizing Therapeutic Index via Simultaneous Clinical Exposure-Toxicity/Preclinical Efficacy modeling
+Supporting MATLAB code for Clinical Cancer Research accepted manuscript: Dose Optimization for Anticancer Drug Combinations: Maximizing Therapeutic Index via Simultaneous Clinical Exposure-Toxicity/Preclinical Efficacy modeling (doi: 10.1158/1078-0432.CCR-18-3882)
 
 do_everything.m
 Does almost everything. This is a script file that generates synthetic mouse efficacy and clinical toxicity data and then performs appropriate analyses with these data corresponding to some of the manuscript figures. This file calls fit_loewe_combo_tox_data2.m and unilogifit.m functions, also included. 
